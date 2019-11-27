@@ -2,33 +2,6 @@ import React, { Component } from "react";
 import Cell from "./Cell";
 import './Board.css';
 
-
-/** Game board of Lights out.
- *
- * Properties:
- *
- * - nrows: number of rows of board
- * - ncols: number of cols of board
- * - chanceLightStartsOn: float, chance any cell is lit at start of game
- *
- * State:
- *
- * - hasWon: boolean, true when board is all off
- * - board: array-of-arrays of true/false
- *
- *    For this board:
- *       .  .  .
- *       O  O  .     (where . is off, and O is on)
- *       .  .  .
- *
- *    This would be: [[f, f, f], [t, t, f], [f, f, f]]
- *
- *  This should render an HTML table of individual <Cell /> components.
- *
- *  This doesn't handle any clicks --- clicks are on individual cells
- *
- **/
-
 class Board extends Component {
   static defaultProps = {
     nRows: 5,
@@ -71,7 +44,6 @@ class Board extends Component {
 
 
     function flipCell(y, x) {
-      // if this coord is actually on board, flip it
 
       if (x >= 0 && x < nRows && y >= 0 && y < nCols) {
         board[y][x] = !board[y][x];
@@ -84,15 +56,10 @@ class Board extends Component {
     flipCell(y, x + 1);
     flipCell(y - 1, x);
     flipCell(y + 1, x);
-    let hasWon = false;
+
+    let hasWon = board.every(row => row.every(cell => !cell));
     this.setState({board: board, hasWon: hasWon})
 
-    // TODO: flip this cell and the cells around it
-
-    // win when every cell is turned off
-    // TODO: determine is the game has been won
-
-    // this.setState({board, hasWon});
   }
 
 
@@ -114,9 +81,6 @@ class Board extends Component {
       tableBord.push(<tr key={y}>{row}</tr>);
     }
 
-    // TODO
-
-    // make table board
     return (
       <table className='Board'>
         <tbody>{tableBord}</tbody>
